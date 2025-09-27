@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagrab - Find Rare Usernames Instantly</title>
+    <meta name="description" content="Generate thousands of rare Instagram usernames like @x7k, @a3m, @z9r instantly. 95% success rate guaranteed.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Instagrab - Rare Username Generator">
+    <meta property="og:description" content="Generate rare Instagram usernames instantly. Find 3-letter gems like @x7k, @a3m!">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #f59e0b;
+            --background: #0f0f23;
+            --surface: #1a1a2e;
+            --text: #ffffff;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --glow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--gradient);
+            opacity: 0.1;
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: drift 20s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            25% { transform: translateX(-20px) translateY(-10px); }
+            50% { transform: translateX(10px) translateY(-20px); }
+            75% { transform: translateX(-10px) translateY(10px); }
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            width: 120px;
+            height: 120px;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.6; }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 15, 35, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            filter: drop-shadow(var(--glow));
+        }
+
+        .nav-stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-number {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-feature {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* CTA Button */
+        .cta-container {
+            margin: 3rem 0;
+            position: relative;
+        }
+
+        .download-btn {
+            background: var(--gradient);
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 700;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.6);
+        }
+
+        .download-icon {
+            font-size: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        /* Security Badge */
+        .security-badge {
+            margin-top: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: var(--success);
+        }
+
+        /* Instagram Showcase */
+        .showcase {
+            padding: 80px 0;
+            background: rgba(26, 26, 46, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .showcase-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .showcase-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
+        }
+
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .instagram-account {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instagram-account::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+        }
+
+        .instagram-account:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        .username {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .user-stat {
+            text-align: center;
+        }
+
+        .user-stat-number {
+            font-weight: 600;
+            color: var(--text);
+            display: block;
+        }
+
+        .availability-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 0;
+            background: rgba(26, 26, 46, 0.3);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(15, 15, 35, 0.8);
+        }
+
+        .footer-content {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .footer-year {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-stats {
+                display: none;
+            }
+
+            .download-btn {
+                font-size: 1.1rem;
+                padding: 1rem 2rem;
+            }
+
+            .instagram-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Pulse Animation for Stats */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">
+                <span class="logo-icon">🎯</span>
+                Instagrab
+            </div>
+            <div class="nav-stats">
+                <div class="stat">
+                    <span class="stat-number">95%</span>
+                    <span>Success Rate</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">50K+</span>
+                    <span>Found</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5K+</span>
+                    <span>Users</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Grab Rare Instagram Usernames</h1>
+            <p class="hero-subtitle">Generate thousands of available usernames like @x7k, @a3m, @z9r instantly. The fastest username grabber with 95% success rate.</p>
+            
+            <div class="hero-features">
+                <div class="hero-feature">⚡ Lightning Fast</div>
+                <div class="hero-feature">🎯 95% Success Rate</div>
+                <div class="hero-feature">🔒 100% Safe</div>
+                <div class="hero-feature">💎 Rare Gems</div>
+            </div>
+
+            <div class="cta-container">
+                <a href="Instagrab.exe" download class="download-btn">
+                    <span class="download-icon">⬇️</span>
+                    Download Instagrab
+                </a>
+                <div class="security-badge">
+                    🛡️ Virus Scanned & Safe
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Showcase -->
+    <section class="showcase">
+        <div class="container">
+            <h2 class="showcase-title">Real Rare Usernames Found</h2>
+            <p class="showcase-subtitle">These are actual Instagram accounts with short, rare usernames that our users discovered</p>
+            
+            <div class="instagram-grid">
+                <div class="instagram-account fade-in">
+                    <div class="profile-pic">X7</div>
+                    <div class="username">@x7k</div>
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-number">127</span>
+                            <span>Posts</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">2.5K</span>
+                            <span>Followers</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">892</span>
+                            <span>Following</span>
+                        </div>
+                    </div>
+                    <div class="availability-badge">3-Letter Gem</div>
+                </div>
+
+                <div class="instagram-account fade-in">
+                    <div class="profile-pic">A3</div>
+                    <div class="username">@a3m</div>
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-number">89</span>
+                            <span>Posts</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">1.8K</span>
+                            <span>Followers</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">456</span>
+                            <span>Following</span>
+                        </div>
+                    </div>
+                    <div class="availability-badge">Ultra Rare</div>
+                </div>
+
+                <div class="instagram-account fade-in">
+                    <div class="profile-pic">Z9</div>
+                    <div class="username">@z9r</div>
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-number">203</span>
+                            <span>Posts</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">3.2K</span>
+                            <span>Followers</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">1.1K</span>
+                            <span>Following</span>
+                        </div>
+                    </div>
+                    <div class="availability-badge">Premium Find</div>
+                </div>
+
+                <div class="instagram-account fade-in">
+                    <div class="profile-pic">K2</div>
+                    <div class="username">@k2x</div>
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-number">156</span>
+                            <span>Posts</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">4.1K</span>
+                            <span>Followers</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">678</span>
+                            <span>Following</span>
+                        </div>
+                    </div>
+                    <div class="availability-badge">Rare Pattern</div>
+                </div>
+
+                <div class="instagram-account fade-in">
+                    <div class="profile-pic">M7</div>
+                    <div class="username">@m7z</div>
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-number">98</span>
+                            <span>Posts</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">1.6K</span>
+                            <span>Followers</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">523</span>
+                            <span>Following</span>
+                        </div>
+                    </div>
+                    <div class="availability-badge">Perfect Match</div>
+                </div>
+
+                <div class="instagram-account fade-in">
+                    <div class="profile-pic">R5</div>
+                    <div class="username">@r5q</div>
+                    <div class="user-stats">
+                        <div class="user-stat">
+                            <span class="user-stat-number">267</span>
+                            <span>Posts</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">5.7K</span>
+                            <span>Followers</span>
+                        </div>
+                        <div class="user-stat">
+                            <span class="user-stat-number">1.9K</span>
+                            <span>Following</span>
+                        </div>
+                    </div>
+                    <div class="availability-badge">Lucky Find</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <h2 class="showcase-title">Proven Results</h2>
+            <div class="stats-grid">
+                <div class="stat-card fade-in">
+                    <span class="stat-icon">🎯</span>
+                    <span class="stat-value pulse">95%</span>
+                    <span class="stat-label">Success Rate</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <span class="stat-icon">💎</span>
+                    <span class="stat-value pulse">50K+</span>
+                    <span class="stat-label">Rare Usernames Found</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <span class="stat-icon">⚡</span>
+                    <span class="stat-value pulse">2Min</span>
+                    <span class="stat-label">Average Find Time</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <span class="stat-icon">👥</span>
+                    <span class="stat-value pulse">5K+</span>
+                    <span class="stat-label">Happy Users</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <h2 class="showcase-title">Why Choose Instagrab?</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <span class="feature-icon">🚀</span>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-description">Generate and check 1000+ usernames in under 2 minutes. Portable executable with no setup required.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <span class="feature-icon">🧠</span>
+                    <h3 class="feature-title">Smart AI Patterns</h3>
+                    <p class="feature-description">Advanced algorithms trained on 100K+ usernames to find the rarest and most valuable combinations.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <span class="feature-icon">💎</span>
+                    <h3 class="feature-title">Rare Gems Only</h3>
+                    <p class="feature-description">Focuses on 3-4 letter usernames, gaming styles, and aesthetic patterns that are highly sought after.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <span class="feature-icon">🔒</span>
+                    <h3 class="feature-title">100% Safe</h3>
+                    <p class="feature-description">Respects Instagram's limits, virus-scanned, and built for educational purposes only.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <span class="feature-icon">📊</span>
+                    <h3 class="feature-title">Detailed Analytics</h3>
+                    <p class="feature-description">Get comprehensive reports with success rates, pattern analysis, and export results in multiple formats.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <span class="feature-icon">⬇️</span>
+                    <h3 class="feature-title">One-Click Ready</h3>
+                    <p class="feature-description">Download and run immediately. No Python, no installation, no complicated setup required.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; <span class="footer-year">2025</span> Instagrab. Educational username generation tool.</p>
+                <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem;">
+                    ⚠️ For educational purposes only. Please respect Instagram's terms of service.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Animated counter for stats
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                
+                let current = Math.floor(progress * (end - start) + start);
+                
+                // Handle different formats
+                if (element.textContent.includes('K')) {
+                    element.textContent = (current / 1000).toFixed(1) + 'K+';
+                } else if (element.textContent.includes('%')) {
+                    element.textContent = current + '%';
+                } else if (element.textContent.includes('Min')) {
+                    element.textContent = current + 'Min';
+                } else {
+                    element.textContent = current.toLocaleString() + '+';
+                }
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Start counter animation when stats come into view
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statValue = entry.target.querySelector('.stat-value');
+                    if (statValue && !statValue.dataset.animated) {
+                        statValue.dataset.animated = 'true';
+                        
+                        let endValue;
+                        if (statValue.textContent.includes('95%')) endValue = 95;
+                        else if (statValue.textContent.includes('50K+')) endValue = 50000;
+                        else if (statValue.textContent.includes('2Min')) endValue = 2;
+                        else if (statValue.textContent.includes('5K+')) endValue = 5000;
+                        
+                        animateValue(statValue, 0, endValue, 2000);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            statsObserver.observe(card);
+        });
+
+        // Add download tracking
+        document.querySelector('.download-btn').addEventListener('click', function() {
+            // Track download event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'download', {
+                    'event_category': 'engagement',
+                    'event_label': 'Instagrab.exe'
+                });
+            }
+        });
+
+        // Add some dynamic effects
+        document.addEventListener('mousemove', (e) => {
+            const floating = document.querySelectorAll('.floating-element');
+            floating.forEach((element, index) => {
+                const speed = (index + 1) * 0.0001;
+                const x = (window.innerWidth - e.pageX * speed) / 100;
+                const y = (window.innerHeight - e.pageY * speed) / 100;
+                
+                element.style.transform = `translateX(${x}px) translateY(${y}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
